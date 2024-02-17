@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scout Input</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        input{
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+<h1>FRC Scouting Form</h1><br>
+<div id="overall info">
+    <h2>Team and Match Info</h2>
+    <p>Team Number:</p>
+    <input type="number" id="teamnum" placeholder="Team Number" class="input"><label for="teamnum"></label><br>
+    <p>Match Number:</p>
+    <input type="number" id="matchid" placeholder="Match Number" class="input"><label for="matchid"></label>
+</div>
+<div id="Auto">
+    <h2>Autonomous Scoring</h2><br>
+    <p>Did the robot leave the starting zone during the autonomous time?</p><br>
+    <button id="yautoleft" class="y/n">yes</button><button id="nautoleft" class="y/n">no</button><br>
+    <p>How many times did they score in the AMP during auto?</p><br>
+    <input type="number" id="autoAMPscore" placeholder="# of times scored" class="input" min="0" max="20"><label for="autoAMPscore"></label><br>
+    <p>How many times did they score in the SPEAKER during auto?</p><br>
+    <input type="number" id="autoSPEAKERscore" placeholder="# of times scored" class="input" min="0" max="20"><label for="autoSPEAKERscore"></label><br>
+    <button id="autonext" type="submit">Next Section</button>
+</div>
+<div id="teleop" hidden="hidden">
+    <h2>Teleop Scoring</h2>
+    <p>How many times did they score in the AMP?</p><br>
+    <input placeholder="# of times scored" type="number" id="teleopAMPscore" class="input" min="0" max="20">
+    <label for="teleopAMPscore"></label><br>
+    <p>How many times did they score in the SPEAKER normally?</p><br>
+    <input placeholder="# of times scored" type="number" id="teleopSPEAKERscore" class="input" min="0" max="20"><label for="teleopSPEAKERscore"></label><br>
+    <p>How many times did they score in the SPEAKER while it was amplified?</p><br>
+    <input placeholder="# of times scored" type="number" id="teleAMPEDscore" class="input" min="0" max="20"><label for="teleAMPEDscore" ></label><br>
+    <button id="teleopnext">Next Section</button>
+</div>
+<div id="endgame" hidden="hidden">
+    <h2>Endgame</h2><br>
+    <p>Did they end up PARKED?</p><br>
+    <button id="yparked" class="y/n">yes</button><button id="nparked" class="y/n">no</button><br>
+    <p>Did they end up ONSTAGE?</p><br>
+    <button id="yonstage" class="y/n">yes</button><button id="nonstage" class="y/n">no</button><br>
+    <p>Did they score in the TRAP?</p><br>
+    <button id="ytrap" class="y/n">yes</button><button id="ntrap" class="y/n">no</button><br>
+    <button id="endgamenext">Next Section</button>
+</div>
+<div id="confirm" hidden="hidden">
+    <h2>Does this score look right?</h2><br>
+    <p id="finalscore">points</p><br>
+    <button id="finalyes">yes</button><button id="finalno">no</button><br>
+</div>
+<div id="last" hidden="hidden">
+    <button id="submitbtn">reset</button>
+</div>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+<script src="https://cdn.jsdelivr.net/combine/npm/workbox-sw@6.5.3/build/workbox-sw.min.js"></script>-->
+<script src="service-worker.js"></script>
+<script src="qrcode.js"></script>
+<script>
+    //vars for y/n buttons
+    let points = 0;
+    let parked = 0;
+    let onstage = 0;
+    let trap = 0;
+    let leftarea = 0;
+    let parkedclicked=false;
+    let onstageclicked= false;
+    let trapclicked = false;
+    let leftclicked =false;
+
+    //misc vars
+    let tempPts = 0;
+    //[Team num, match id, left area y/n,auto amp scores, auto speaker scores,teleop amp scores, teleop speaker scores, teleop amped speaker scores,
+    //endgame parked y/n, endgame onstage y/n, endgame trap score y/n, total points] (it will be updated to this at the end)
+    let finalarray = [];
+
+    //vars for auto time score text inputs
+    let AMPauto = document.getElementById("autoAMPscore");
+    let SPEAKERauto = document.getElementById("autoSPEAKERscore");
+    let anext = document.getElementById("autonext");
+    let autoarray = [];
+
+    //vars for teleop time score text inputs
+    let teleAMP = document.getElementById("teleopAMPscore");
+    let teleSPEAKER = document.getElementById("teleopSPEAKERscore");
+    let teleAMPED = document.getElementById("teleAMPEDscore");
+    let telearray = [];
+
+    //div id's
+    let auto = document.getElementById("Auto");
+    let teleop = document.getElementById("teleop");
+    let endgame = document.getElementById("endgame");
+    let confirm = document.getElementById("confirm");
+    let last = document.getElementById("last");
+
+    //match and team numbers
+    let teamnum = document.getElementById("teamnum");
+    let matchid= document.getElementById("matchid");
+    //control for the next section button for the auto events (also does points)
+    anext.addEventListener("click", function () {
+        if (AMPauto.value !== "" && SPEAKERauto.value !== ""&&leftclicked) {
+        autoarray = [AMPauto.value, SPEAKERauto.value, leftarea];
+        console.log(autoarray);
+        tempPts = 0;
+        tempPts = (Number(AMPauto.value) * 2) + (Number(SPEAKERauto.value) * 5) + leftarea * 2;
+        points += tempPts;
+        console.log(points);
+        teleop.hidden = false;
+        auto.hidden = true;
+    }
+        else{
+            alert("please imput values for all of the fields");
+        }
+    });
+
+    //control for the y/n left starting zone buttons
+    document.getElementById("yautoleft").addEventListener("click", function () {
+        leftarea = 1;
+        document.getElementById("yautoleft").style.backgroundColor = "green";
+        document.getElementById("nautoleft").style.backgroundColor = "lightgrey";
+        leftclicked =true;
+    });
+    document.getElementById("nautoleft").addEventListener("click", function () {
+        leftarea = 0;
+        document.getElementById("nautoleft").style.backgroundColor = "red";
+        document.getElementById("yautoleft").style.backgroundColor = "lightgrey";
+        leftclicked=true;
+    });
+
+    //control for the y/n parked buttons
+    document.getElementById("yparked").addEventListener("click", function () {
+        parked = 1;
+        document.getElementById("yparked").style.backgroundColor = "green";
+        document.getElementById("nparked").style.backgroundColor = "lightgrey";
+        parkedclicked =true;
+    });
+    document.getElementById("nparked").addEventListener("click", function () {
+        parked = 0;
+        document.getElementById("nparked").style.backgroundColor = "red";
+        document.getElementById("yparked").style.backgroundColor = "lightgrey";
+        parkedclicked=true;
+    });
+
+    //control for the y/n onstage buttons
+    document.getElementById("yonstage").addEventListener("click", function () {
+        onstage = 1;
+        document.getElementById("yonstage").style.backgroundColor = "green";
+        document.getElementById("nonstage").style.backgroundColor = "lightgrey";
+        onstageclicked=true;
+    });
+    document.getElementById("nonstage").addEventListener("click", function () {
+        onstage = 0;
+        document.getElementById("nonstage").style.backgroundColor = "red";
+        document.getElementById("yonstage").style.backgroundColor = "lightgrey";
+        onstageclicked=true;
+    });
+
+    //control for the y/n scored in trap buttons
+    document.getElementById("ytrap").addEventListener("click", function () {
+        trap = 1;
+        document.getElementById("ytrap").style.backgroundColor = "green";
+        document.getElementById("ntrap").style.backgroundColor = "lightgrey";
+        trapclicked=true;
+    });
+    document.getElementById("ntrap").addEventListener("click", function () {
+        trap = 0;
+        document.getElementById("ntrap").style.backgroundColor = "red";
+        document.getElementById("ytrap").style.backgroundColor = "lightgrey";
+        trapclicked=true;
+    });
+
+    //control for the teleop next section button (also does points)
+    document.getElementById("teleopnext").addEventListener("click", function () {
+        if (teleAMP.value !== "" && teleAMPED.value !== "" && teleSPEAKER.value !== "") {
+        telearray = [teleAMPED.value, teleSPEAKER.value, teleAMP.value];
+        //console.log(telearray);
+        tempPts = 0;
+        tempPts = (Number(teleAMPED.value) * 5) + (Number(teleSPEAKER.value) * 2) + (Number(teleAMP.value));
+        points += tempPts;
+        console.log(points);
+        endgame.hidden = false;
+        teleop.hidden = true;
+    }
+        else{
+            alert("please input vales for all the fields");
+        }
+    });
+
+    //control for the endgame next section button (also does points)
+    document.getElementById("endgamenext").addEventListener("click", function () {
+        if(onstageclicked&&parkedclicked&&trapclicked) {
+            tempPts = 0;
+            tempPts = (trap * 5) + (onstage * 3) + parked;
+            points = points + tempPts;
+            document.getElementById("finalscore").innerText = points;
+            console.log(points);
+            confirm.hidden = false;
+            endgame.hidden = true;
+        }
+        else{
+            alert("please input values for every field");
+        }
+    });
+
+    //functions for the final confirmation- to make sure the scores they input add up to the same as the official gamescore
+    document.getElementById("finalno").addEventListener("click", function () {
+        points = 0;
+        auto.hidden = false;
+        confirm.hidden = true;
+    })
+    document.getElementById("finalyes").addEventListener("click", function () {
+        if (teamnum.value !== "" && matchid.value !== "") {
+        //console.log("takes you to the final submission-will do when i add full functionality");
+        //  window.alert("takes you to the final submission/qr code thing-will do when i add full functionality and am working with zach");
+        finalarray = [teamnum.value, matchid.value, YorN(leftarea), AMPauto.value, SPEAKERauto.value, teleAMP.value, teleSPEAKER.value, teleAMPED.value, YorN(parked), YorN(onstage),
+            YorN(trap), points];
+        console.log(finalarray);
+        const jsonString = finalarray.toString();
+        console.log(jsonString);
+        let l = document.createElement('div');
+        l.setAttribute("id", "qrcode1");
+        l.setAttribute('style', 'padding: 0px');
+        document.getElementById("last").appendChild(l);
+        document.getElementById("qrcode1").style.border = "thick solid #FFFFFF";
+        new QRCode("qrcode1", {
+            text: jsonString,
+            width: 256,
+            height: 256,
+            colorDark: "#000000",
+            colorLight: "#FFFFFF",
+            correctLevel: QRCode.CorrectLevel.H,
+        });
+        document.getElementById("last").hidden = false;
+        confirm.hidden = true;
+    }
+        else{
+            alert("please input team number and/or match number");
+        }
+    });
+document.getElementById("submitbtn").addEventListener("click", function (){
+    for (let i = 0; i < document.getElementsByClassName("input").length; i++) {
+        document.getElementsByClassName("input")[i].value="";
+    }
+    for (let i = 0; i < document.getElementsByClassName("y/n").length; i++) {
+      let element = document.getElementById(document.getElementsByClassName("y/n")[i].id);
+      element.style.backgroundColor = "lightgrey";
+    }
+    points = 0;
+   parked = 0;
+    onstage = 0;
+    trap = 0;
+   leftarea = 0;
+    parkedclicked=false;
+     onstageclicked= false;
+     trapclicked = false;
+    leftclicked =false;
+   auto.hidden=false;
+   last.hidden=true;
+   //qrdiv.hidden=true;
+    document.getElementById("qrcode1").remove();
+});
+    function YorN(num) {
+        if (Number(num) == 1) {
+            return ("yes");
+        } else {
+            return ("no");
+        }
+    }
+    // Register the service worker
+    /*if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js').then((registration) => {
+                console.log('Service Worker registered:', registration);
+            }).catch((registrationError) => {
+                console.log('Service Worker registration failed:', registrationError);
+            });
+        });
+    }
+*/
+</script>
+</body>
+</html>
