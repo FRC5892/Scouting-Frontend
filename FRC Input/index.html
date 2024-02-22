@@ -65,6 +65,7 @@
 <script src="qrcode.js"></script>
 <script>
     //vars for y/n buttons
+    //perhaps i do this with an array or something, that might be more efficient?
     let points = 0;
     let parked = 0;
     let onstage = 0;
@@ -85,12 +86,14 @@
     let AMPauto = document.getElementById("autoAMPscore");
     let SPEAKERauto = document.getElementById("autoSPEAKERscore");
     let anext = document.getElementById("autonext");
+    //this isnt actually important lol-it was mostly used for some testing/debugging
     let autoarray = [];
 
     //vars for teleop time score text inputs
     let teleAMP = document.getElementById("teleopAMPscore");
     let teleSPEAKER = document.getElementById("teleopSPEAKERscore");
     let teleAMPED = document.getElementById("teleAMPEDscore");
+    //this isnt actually important lol-it was mostly used for some testing/debugging
     let telearray = [];
 
     //div id's
@@ -105,6 +108,7 @@
     let matchid= document.getElementById("matchid");
     //control for the next section button for the auto events (also does points)
     anext.addEventListener("click", function () {
+        //moves to the next section if there are inputs for each field, otherwise it gives an alert to fill out every field
         if (AMPauto.value !== "" && SPEAKERauto.value !== ""&&leftclicked) {
         autoarray = [AMPauto.value, SPEAKERauto.value, leftarea];
         console.log(autoarray);
@@ -178,6 +182,7 @@
 
     //control for the teleop next section button (also does points)
     document.getElementById("teleopnext").addEventListener("click", function () {
+         //moves to the next section if there are inputs for each field, otherwise it gives an alert to fill out every field
         if (teleAMP.value !== "" && teleAMPED.value !== "" && teleSPEAKER.value !== "") {
         telearray = [teleAMPED.value, teleSPEAKER.value, teleAMP.value];
         //console.log(telearray);
@@ -195,6 +200,7 @@
 
     //control for the endgame next section button (also does points)
     document.getElementById("endgamenext").addEventListener("click", function () {
+         //moves to the next section if there are inputs for each field, otherwise it gives an alert to fill out every field
         if(onstageclicked&&parkedclicked&&trapclicked) {
             tempPts = 0;
             tempPts = (trap * 5) + (onstage * 3) + parked;
@@ -211,19 +217,21 @@
 
     //functions for the final confirmation- to make sure the scores they input add up to the same as the official gamescore
     document.getElementById("finalno").addEventListener("click", function () {
+        //goes back to the start of the form so they can edit values if the score doesnt match up.
         points = 0;
         auto.hidden = false;
         confirm.hidden = true;
-    })
+    });
     document.getElementById("finalyes").addEventListener("click", function () {
+        //moves to the next section if there are inputs for match and team number, otherwise it gives an alert to fill out those fields
         if (teamnum.value !== "" && matchid.value !== "") {
-        //console.log("takes you to the final submission-will do when i add full functionality");
-        //  window.alert("takes you to the final submission/qr code thing-will do when i add full functionality and am working with zach");
+            //sets values for the final array, these will be logged and will become the data in the QR code
         finalarray = [teamnum.value, matchid.value, YorN(leftarea), AMPauto.value, SPEAKERauto.value, teleAMP.value, teleSPEAKER.value, teleAMPED.value, YorN(parked), YorN(onstage),
             YorN(trap), points];
         console.log(finalarray);
         const jsonString = finalarray.toString();
-        console.log(jsonString);
+        //console.log(jsonString);
+            //creates and actually inserts the QR code
         let l = document.createElement('div');
         l.setAttribute("id", "qrcode1");
         l.setAttribute('style', 'padding: 0px');
@@ -244,6 +252,8 @@
             alert("please input team number and/or match number");
         }
     });
+    
+    //resets all the values for everything so the form can be redone for another match. 
 document.getElementById("submitbtn").addEventListener("click", function (){
     for (let i = 0; i < document.getElementsByClassName("input").length; i++) {
         document.getElementsByClassName("input")[i].value="";
@@ -266,6 +276,7 @@ document.getElementById("submitbtn").addEventListener("click", function (){
    //qrdiv.hidden=true;
     document.getElementById("qrcode1").remove();
 });
+    ///returns yes or no based on some values, this is used to make the final array say yes or no rather than 1 or 0
     function YorN(num) {
         if (Number(num) == 1) {
             return ("yes");
@@ -273,7 +284,7 @@ document.getElementById("submitbtn").addEventListener("click", function (){
             return ("no");
         }
     }
-    // Register the service worker
+    // Register the service worker-for caching stuff, ill add this functionality later but i dont need to/feel like it rn.
     /*if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/service-worker.js').then((registration) => {
