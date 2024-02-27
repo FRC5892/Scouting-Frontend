@@ -4,14 +4,9 @@
     <meta charset="UTF-8">
     <title>Scout Input</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <style>
-        input{
-            width: 100px;
-        }
-    </style>
 </head>
 <body>
-<h1>FRC Scouting Form</h1><br>
+<h1 class="TOP">FRC Scouting Form</h1><br>
 <div id="overall info">
     <h2>Team and Match Info</h2>
     <p>Team Number:</p>
@@ -29,7 +24,7 @@
     <input type="number" id="autoAMPscore" placeholder="# of times scored" class="input" min="0" max="20"><label for="autoAMPscore"></label><br>
     <p>How many times did they score in the SPEAKER during auto?</p><br>
     <input type="number" id="autoSPEAKERscore" placeholder="# of times scored" class="input" min="0" max="20"><label for="autoSPEAKERscore"></label><br>
-    <button id="autonext" type="submit">Next Section</button>
+    <button id="autonext" type="submit" class="next">Next Section</button>
 </div>
 <div id="teleop" hidden="hidden">
     <h2>Teleop Scoring</h2>
@@ -40,7 +35,7 @@
     <input placeholder="# of times scored" type="number" id="teleopSPEAKERscore" class="input" min="0" max="20"><label for="teleopSPEAKERscore"></label><br>
     <p>How many times did they score in the SPEAKER while it was amplified?</p><br>
     <input placeholder="# of times scored" type="number" id="teleAMPEDscore" class="input" min="0" max="20"><label for="teleAMPEDscore" ></label><br>
-    <button id="teleopnext">Next Section</button>
+    <button id="teleopnext" class="next">Next Section</button>
 </div>
 <div id="endgame" hidden="hidden">
     <h2>Endgame</h2><br>
@@ -48,9 +43,13 @@
     <button id="yparked" class="y/n">yes</button><button id="nparked" class="y/n">no</button><br>
     <p>Did they end up ONSTAGE?</p><br>
     <button id="yonstage" class="y/n">yes</button><button id="nonstage" class="y/n">no</button><br>
+    <p>Were they spotlit?</p><br>
+    <button id="yspot" class="y/n">yes</button><button id="nspot" class="y/n">no</button><br>
     <p>Did they score in the TRAP?</p><br>
     <button id="ytrap" class="y/n">yes</button><button id="ntrap" class="y/n">no</button><br>
-    <button id="endgamenext">Next Section</button>
+    <p>Did they get Harmony?</p><br>
+    <button id="yharmony" class="y/n">yes</button><button id="nharmony" class="y/n">no</button><br>
+    <button id="endgamenext" class="next">Next Section</button>
 </div>
 <div id="confirm" hidden="hidden">
     <h2>Does this score look right?</h2><br>
@@ -66,7 +65,7 @@
 <script src="service-worker.js"></script>-->
 <script src="qrcode.js"></script>
 <script>
-      //vars for y/n buttons
+    //vars for y/n buttons
     //perhaps i do this with an array or something, that might be more efficient?
     let points = 0;
     let parked = 0;
@@ -185,13 +184,13 @@
         spotlit = 1;
         document.getElementById("yspot").style.backgroundColor = "green";
         document.getElementById("nspot").style.backgroundColor = "lightgrey";
-        onstageclicked=true;
+        spotclicked=true;
     });
     document.getElementById("nspot").addEventListener("click", function () {
         spotlit = 0;
         document.getElementById("nspot").style.backgroundColor = "red";
         document.getElementById("yspot").style.backgroundColor = "lightgrey";
-        onstageclicked=true;
+        spotclicked=true;
     });
     //control for the y/n scored in trap buttons
     document.getElementById("ytrap").addEventListener("click", function () {
@@ -241,7 +240,7 @@
     //control for the endgame next section button (also does points)
     document.getElementById("endgamenext").addEventListener("click", function () {
         //moves to the next section if there are inputs for each field, otherwise it gives an alert to fill out every field
-        if(onstageclicked&&parkedclicked&&trapclicked) {
+        if(onstageclicked&&parkedclicked&&trapclicked&&spotclicked&&harmclicked) {
             tempPts = 0;
             tempPts = (trap * 5) + (onstage * 3) + parked+(harmony*2);
             if(onstage==1 && spotlit==1){
@@ -269,7 +268,7 @@
     });
     document.getElementById("finalyes").addEventListener("click", function () {
         //moves to the next section if there are inputs for match and team number, otherwise it gives an alert to fill out those fields
-        if (teamnum.value !== "" && matchid.value !== "") {
+        if (teamnum.value !== "" && matchid.value !== "" && scoutName.value !=="") {
             //sets values for the final array, these will be logged and will become the data in the QR code
             finalarray = [teamnum.value, matchid.value, scoutName.value, YorN(leftarea), AMPauto.value, SPEAKERauto.value, autonScore, teleAMP.value, teleSPEAKER.value,
                 teleAMPED.value, YorN(parked), YorN(onstage), YorN(trap),YorN(spotlit),YorN(harmony), speakerPoints,ampPoints,endgamePoints, points];
@@ -279,7 +278,7 @@
             //creates and actually inserts the QR code
             let l = document.createElement('div');
             l.setAttribute("id", "qrcode1");
-            l.setAttribute('style', 'padding-left:40%');
+            l.setAttribute('style', 'padding-left: 40%;');
             document.getElementById("last").appendChild(l);
             document.getElementById("qrcode1").style.border = "thick solid #FFFFFF";
             new QRCode("qrcode1", {
