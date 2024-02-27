@@ -17,7 +17,9 @@
     <p>Team Number:</p>
     <input type="number" id="teamnum" placeholder="Team Number" class="input"><label for="teamnum"></label><br>
     <p>Match Number:</p>
-    <input type="number" id="matchid" placeholder="Match Number" class="input"><label for="matchid"></label>
+    <input type="number" id="matchid" placeholder="Match Number" class="input"><label for="matchid"></label><br>
+    <p>Your Name:</p>
+    <input id="scoutname" placeholder="Your Name"><label for="scoutname"></label>
 </div>
 <div id="Auto">
     <h2>Autonomous Scoring</h2><br>
@@ -78,8 +80,15 @@
 
     //misc vars
     let tempPts = 0;
-    //[Team num, match id, left area y/n,auto amp scores, auto speaker scores,teleop amp scores, teleop speaker scores, teleop amped speaker scores,
-    //endgame parked y/n, endgame onstage y/n, endgame trap score y/n, total points] (it will be updated to this at the end)
+    let speakerPoints = 0;
+    let ampPoints = 0;
+    let autonScore = 0;
+    let endgamePoints = 0;
+    scoutName=document.getElementById("scoutname");
+    //[Team num, match id, scout name, left area y/n,auto amp scores, auto speaker scores, auton score, teleop amp scores,
+    // teleop amped speaker scores,teleop speaker scores, endgame parked y/n,
+    // endgame onstage y/n, endgame trap score y/n, all speaker points, all amp points, endgame points, total points]
+    //(it will be updated to this at the end)
     let finalarray = [];
 
     //vars for auto time score text inputs
@@ -110,15 +119,18 @@
     anext.addEventListener("click", function () {
         //moves to the next section if there are inputs for each field, otherwise it gives an alert to fill out every field
         if (AMPauto.value !== "" && SPEAKERauto.value !== ""&&leftclicked) {
-        autoarray = [AMPauto.value, SPEAKERauto.value, leftarea];
-        console.log(autoarray);
-        tempPts = 0;
-        tempPts = (Number(AMPauto.value) * 2) + (Number(SPEAKERauto.value) * 5) + leftarea * 2;
-        points += tempPts;
-        console.log(points);
-        teleop.hidden = false;
-        auto.hidden = true;
-    }
+            autoarray = [AMPauto.value, SPEAKERauto.value, leftarea];
+            console.log(autoarray);
+            tempPts = 0;
+            tempPts = (Number(AMPauto.value) * 2) + (Number(SPEAKERauto.value) * 5) + leftarea * 2;
+            points += tempPts;
+            console.log(points);
+            teleop.hidden = false;
+            auto.hidden = true;
+            speakerPoints = Number(SPEAKERauto.value)*5;
+            ampPoints=Number(AMPauto.value)*2;
+            autonScore = tempPts;
+        }
         else{
             alert("please imput values for all of the fields");
         }
@@ -182,17 +194,19 @@
 
     //control for the teleop next section button (also does points)
     document.getElementById("teleopnext").addEventListener("click", function () {
-         //moves to the next section if there are inputs for each field, otherwise it gives an alert to fill out every field
+        //moves to the next section if there are inputs for each field, otherwise it gives an alert to fill out every field
         if (teleAMP.value !== "" && teleAMPED.value !== "" && teleSPEAKER.value !== "") {
-        telearray = [teleAMPED.value, teleSPEAKER.value, teleAMP.value];
-        //console.log(telearray);
-        tempPts = 0;
-        tempPts = (Number(teleAMPED.value) * 5) + (Number(teleSPEAKER.value) * 2) + (Number(teleAMP.value));
-        points += tempPts;
-        console.log(points);
-        endgame.hidden = false;
-        teleop.hidden = true;
-    }
+            telearray = [teleAMPED.value, teleSPEAKER.value, teleAMP.value];
+            //console.log(telearray);
+            tempPts = 0;
+            tempPts = (Number(teleAMPED.value) * 5) + (Number(teleSPEAKER.value) * 2) + (Number(teleAMP.value));
+            points += tempPts;
+            console.log(points);
+            endgame.hidden = false;
+            teleop.hidden = true;
+            speakerPoints +=(Number(teleAMPED.value)*5)+(Number(teleSPEAKER.value)*2);
+            ampPoints += Number(teleAMP.value);
+        }
         else{
             alert("please input vales for all the fields");
         }
@@ -200,7 +214,7 @@
 
     //control for the endgame next section button (also does points)
     document.getElementById("endgamenext").addEventListener("click", function () {
-         //moves to the next section if there are inputs for each field, otherwise it gives an alert to fill out every field
+        //moves to the next section if there are inputs for each field, otherwise it gives an alert to fill out every field
         if(onstageclicked&&parkedclicked&&trapclicked) {
             tempPts = 0;
             tempPts = (trap * 5) + (onstage * 3) + parked;
@@ -209,6 +223,7 @@
             console.log(points);
             confirm.hidden = false;
             endgame.hidden = true;
+            endgamePoints=tempPts;
         }
         else{
             alert("please input values for every field");
@@ -226,56 +241,56 @@
         //moves to the next section if there are inputs for match and team number, otherwise it gives an alert to fill out those fields
         if (teamnum.value !== "" && matchid.value !== "") {
             //sets values for the final array, these will be logged and will become the data in the QR code
-        finalarray = [teamnum.value, matchid.value, YorN(leftarea), AMPauto.value, SPEAKERauto.value, teleAMP.value, teleSPEAKER.value, teleAMPED.value, YorN(parked), YorN(onstage),
-            YorN(trap), points];
-        console.log(finalarray);
-        const jsonString = finalarray.toString();
-        //console.log(jsonString);
+            finalarray = [teamnum.value, matchid.value, scoutName.value, YorN(leftarea), AMPauto.value, SPEAKERauto.value, autonScore, teleAMP.value, teleSPEAKER.value,
+                teleAMPED.value, YorN(parked), YorN(onstage), YorN(trap), speakerPoints,ampPoints,endgamePoints, points];
+            console.log(finalarray);
+            const jsonString = finalarray.toString();
+            //console.log(jsonString);
             //creates and actually inserts the QR code
-        let l = document.createElement('div');
-        l.setAttribute("id", "qrcode1");
-        l.setAttribute('style', 'padding: 0px');
-        document.getElementById("last").appendChild(l);
-        document.getElementById("qrcode1").style.border = "thick solid #FFFFFF";
-        new QRCode("qrcode1", {
-            text: jsonString,
-            width: 256,
-            height: 256,
-            colorDark: "#000000",
-            colorLight: "#FFFFFF",
-            correctLevel: QRCode.CorrectLevel.H,
-        });
-        document.getElementById("last").hidden = false;
-        confirm.hidden = true;
-    }
+            let l = document.createElement('div');
+            l.setAttribute("id", "qrcode1");
+            l.setAttribute('style', 'padding: 0px');
+            document.getElementById("last").appendChild(l);
+            document.getElementById("qrcode1").style.border = "thick solid #FFFFFF";
+            new QRCode("qrcode1", {
+                text: jsonString,
+                width: 256,
+                height: 256,
+                colorDark: "#000000",
+                colorLight: "#FFFFFF",
+                correctLevel: QRCode.CorrectLevel.H,
+            });
+            document.getElementById("last").hidden = false;
+            confirm.hidden = true;
+        }
         else{
             alert("please input team number and/or match number");
         }
     });
-    
-    //resets all the values for everything so the form can be redone for another match. 
-document.getElementById("submitbtn").addEventListener("click", function (){
-    for (let i = 0; i < document.getElementsByClassName("input").length; i++) {
-        document.getElementsByClassName("input")[i].value="";
-    }
-    for (let i = 0; i < document.getElementsByClassName("y/n").length; i++) {
-      let element = document.getElementById(document.getElementsByClassName("y/n")[i].id);
-      element.style.backgroundColor = "lightgrey";
-    }
-    points = 0;
-   parked = 0;
-    onstage = 0;
-    trap = 0;
-   leftarea = 0;
-    parkedclicked=false;
-     onstageclicked= false;
-     trapclicked = false;
-    leftclicked =false;
-   auto.hidden=false;
-   last.hidden=true;
-   //qrdiv.hidden=true;
-    document.getElementById("qrcode1").remove();
-});
+
+    //resets all the values for everything so the form can be redone for another match.
+    document.getElementById("submitbtn").addEventListener("click", function (){
+        for (let i = 0; i < document.getElementsByClassName("input").length; i++) {
+            document.getElementsByClassName("input")[i].value="";
+        }
+        for (let i = 0; i < document.getElementsByClassName("y/n").length; i++) {
+            let element = document.getElementById(document.getElementsByClassName("y/n")[i].id);
+            element.style.backgroundColor = "lightgrey";
+        }
+        points = 0;
+        parked = 0;
+        onstage = 0;
+        trap = 0;
+        leftarea = 0;
+        parkedclicked=false;
+        onstageclicked= false;
+        trapclicked = false;
+        leftclicked =false;
+        auto.hidden=false;
+        last.hidden=true;
+        //qrdiv.hidden=true;
+        document.getElementById("qrcode1").remove();
+    });
     ///returns yes or no based on some values, this is used to make the final array say yes or no rather than 1 or 0
     function YorN(num) {
         if (Number(num) == 1) {
