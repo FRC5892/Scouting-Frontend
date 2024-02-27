@@ -66,17 +66,21 @@
 <script src="service-worker.js"></script>-->
 <script src="qrcode.js"></script>
 <script>
-    //vars for y/n buttons
+      //vars for y/n buttons
     //perhaps i do this with an array or something, that might be more efficient?
     let points = 0;
     let parked = 0;
     let onstage = 0;
     let trap = 0;
+    let spotlit =0;
+    let harmony = 0;
     let leftarea = 0;
     let parkedclicked=false;
     let onstageclicked= false;
     let trapclicked = false;
     let leftclicked =false;
+    let harmclicked=false;
+    let spotclicked=false;
 
     //misc vars
     let tempPts = 0;
@@ -84,10 +88,10 @@
     let ampPoints = 0;
     let autonScore = 0;
     let endgamePoints = 0;
-    scoutName=document.getElementById("scoutname");
+    let scoutName=document.getElementById("scoutname");
     //[Team num, match id, scout name, left area y/n,auto amp scores, auto speaker scores, auton score, teleop amp scores,
     // teleop amped speaker scores,teleop speaker scores, endgame parked y/n,
-    // endgame onstage y/n, endgame trap score y/n, all speaker points, all amp points, endgame points, total points]
+    // endgame onstage y/n, endgame trap score y/n,spotlit y/n, harmony y/n, all speaker points, all amp points, endgame points, total points]
     //(it will be updated to this at the end)
     let finalarray = [];
 
@@ -177,7 +181,18 @@
         document.getElementById("yonstage").style.backgroundColor = "lightgrey";
         onstageclicked=true;
     });
-
+    document.getElementById("yspot").addEventListener("click", function () {
+        spotlit = 1;
+        document.getElementById("yspot").style.backgroundColor = "green";
+        document.getElementById("nspot").style.backgroundColor = "lightgrey";
+        onstageclicked=true;
+    });
+    document.getElementById("nspot").addEventListener("click", function () {
+        spotlit = 0;
+        document.getElementById("nspot").style.backgroundColor = "red";
+        document.getElementById("yspot").style.backgroundColor = "lightgrey";
+        onstageclicked=true;
+    });
     //control for the y/n scored in trap buttons
     document.getElementById("ytrap").addEventListener("click", function () {
         trap = 1;
@@ -191,7 +206,18 @@
         document.getElementById("ytrap").style.backgroundColor = "lightgrey";
         trapclicked=true;
     });
-
+    document.getElementById("yharmony").addEventListener("click", function (){
+        harmony = 1;
+        document.getElementById("yharmony").style.backgroundColor = "green";
+        document.getElementById("nharmony").style.backgroundColor = "lightgrey";
+        harmclicked=true;
+    });
+    document.getElementById("nharmony").addEventListener("click", function () {
+        harmony = 0;
+        document.getElementById("nharmony").style.backgroundColor = "red";
+        document.getElementById("yharmony").style.backgroundColor = "lightgrey";
+        harmclicked=true;
+    });
     //control for the teleop next section button (also does points)
     document.getElementById("teleopnext").addEventListener("click", function () {
         //moves to the next section if there are inputs for each field, otherwise it gives an alert to fill out every field
@@ -217,7 +243,11 @@
         //moves to the next section if there are inputs for each field, otherwise it gives an alert to fill out every field
         if(onstageclicked&&parkedclicked&&trapclicked) {
             tempPts = 0;
-            tempPts = (trap * 5) + (onstage * 3) + parked;
+            tempPts = (trap * 5) + (onstage * 3) + parked+(harmony*2);
+            if(onstage==1 && spotlit==1){
+                console.log("added spotlit");
+            tempPts+=spotlit;
+            }
             points = points + tempPts;
             document.getElementById("finalscore").innerText = points;
             console.log(points);
@@ -242,7 +272,7 @@
         if (teamnum.value !== "" && matchid.value !== "") {
             //sets values for the final array, these will be logged and will become the data in the QR code
             finalarray = [teamnum.value, matchid.value, scoutName.value, YorN(leftarea), AMPauto.value, SPEAKERauto.value, autonScore, teleAMP.value, teleSPEAKER.value,
-                teleAMPED.value, YorN(parked), YorN(onstage), YorN(trap), speakerPoints,ampPoints,endgamePoints, points];
+                teleAMPED.value, YorN(parked), YorN(onstage), YorN(trap),YorN(spotlit),YorN(harmony), speakerPoints,ampPoints,endgamePoints, points];
             console.log(finalarray);
             const jsonString = finalarray.toString();
             //console.log(jsonString);
@@ -282,10 +312,14 @@
         onstage = 0;
         trap = 0;
         leftarea = 0;
+        spotlit=0;
+        harmony=0;
         parkedclicked=false;
         onstageclicked= false;
         trapclicked = false;
         leftclicked =false;
+        harmclicked=false;
+        spotclicked=false;
         auto.hidden=false;
         last.hidden=true;
         //qrdiv.hidden=true;
