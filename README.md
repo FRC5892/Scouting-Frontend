@@ -1,1 +1,2 @@
 I think this is mostly done- the CSS will be coming in soon courtesy of Emiliano. 
+Outputs an array (QR code) in this form:     Team num, match id, scout name, left area y/n,auto amp scores, auto speaker scores, auton score, teleop amp scores, teleop amped speaker scores,teleop speaker scores, endgame parked y/n, endgame onstage y/n, endgame trap score y/n,spotlit y/n, harmony y/n, all speaker points, all amp points, endgame points, total points
