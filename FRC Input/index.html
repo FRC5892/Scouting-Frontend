@@ -301,6 +301,7 @@
     document.getElementById("submitbtn").addEventListener("click", function (){
         for (let i = 0; i < document.getElementsByClassName("input").length; i++) {
             document.getElementsByClassName("input")[i].value="";
+            window.alert("Reset: "+document.getElementsByClassName("input")[i].id);
         }
         for (let i = 0; i < document.getElementsByClassName("y/n").length; i++) {
             let element = document.getElementById(document.getElementsByClassName("y/n")[i].id);
