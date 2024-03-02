@@ -1,6 +1,8 @@
 textarea,
 input,
-button {
+.yORn,
+.next,
+select{
     font-size: 1rem;
     font-family: inherit;
     border: none;
@@ -23,7 +25,9 @@ h2{
 p{
     font-size: 1rem;
 }
-button {
+.yORn,
+.next,
+select{
     color: black;
     font-weight: 500;
     font-size: 2rem;
@@ -53,12 +57,34 @@ input {
     width: 100%; /* Set width to 100% for better responsiveness on smaller screens */
     box-sizing: border-box; /* Include padding and border in the width */
 }
-
+.up,
+.down{
+    align-self: center;
+    height: 100px;
+    width: 50%;
+    font-size: 2rem;
+}
+.down{
+    background-color: rgba(165, 42, 42, 0.4);
+}
+.up{
+    background-color: rgba(0, 0, 255, 0.4);
+}
+.scoreDisplay{
+    font-size: 2rem;
+}
+.red{
+    background-color: rgba(255, 0, 0, 0.41);
+}
+.blue{
+    background-color: rgba(0, 0, 255, 0.4);
+}
 /* Add media query for screens with a maximum width of 600px (adjust as needed) */
 @media only screen and (max-width: 600px) {
     textarea,
     input,
-    button {
+    .yORn,
+    .next{
         width: 100%; /* Set width to 100% for better responsiveness on smaller screens */
     }
 }
