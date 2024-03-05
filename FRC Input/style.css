@@ -1,8 +1,9 @@
+/* General styling for form elements */
 textarea,
 input,
 .yORn,
-.next,
-select{
+.next button,
+select {
     font-size: 1rem;
     font-family: inherit;
     border: none;
@@ -13,26 +14,63 @@ select{
     align-self: center;
     margin: 5px;
     width: 100%;
-    height:50px;
+    height: 50px;
     text-align: center;
 }
+
+/* General styling for headings */
 p,
 h1,
-h2{
+h2 {
     align-self: center;
     text-align: center;
+    margin-bottom: 20px;
+    margin-top: 0;
 }
-p{
-    font-size: 1rem;
+
+/* Specific styling for paragraphs */
+p {
+    font-size: 2rem;
 }
+
+/* Specific styling for certain elements */
 .yORn,
-.next,
-select{
+select {
     color: black;
     font-weight: 500;
     font-size: 2rem;
 }
 
+/* Styling for the "next" class */
+.next {
+    display: flex;
+    width: 100%;
+    backface-visibility: hidden;
+}
+
+/* Styling for the up and down buttons */
+.up,
+.down {
+    align-self: center;
+    height: 100px;
+    width: 50%;
+    font-size: 2rem;
+}
+
+.down {
+    background-color: rgba(165, 42, 42, 0.4);
+}
+
+.up {
+    background-color: rgba(0, 0, 255, 0.4);
+}
+
+/* Styling for the score display */
+.scoreDisplay {
+    font-size: 2rem;
+}
+
+/* Styling for interactive elements on hover and active states */
 textarea:hover,
 input:hover,
 button:hover {
@@ -44,47 +82,42 @@ button:active {
     transform: translateY(1px);
 }
 
-button:hover {
-    box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.6), 0 1px 2px hsla(0, 0%, 0%, 0.2);
-}
-
-button:active {
-    box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.4);
-    transform: translateY(1px);
-}
-
-input {
-    width: 100%; /* Set width to 100% for better responsiveness on smaller screens */
-    box-sizing: border-box; /* Include padding and border in the width */
-}
-.up,
-.down{
-    align-self: center;
-    height: 100px;
-    width: 50%;
-    font-size: 2rem;
-}
-.down{
-    background-color: rgba(165, 42, 42, 0.4);
-}
-.up{
-    background-color: rgba(0, 0, 255, 0.4);
-}
-.scoreDisplay{
-    font-size: 2rem;
-}
-.red{
-    background-color: rgba(255, 0, 0, 0.41);
-}
-.blue{
-    background-color: rgba(0, 0, 255, 0.4);
-}
-/* Add media query for screens with a maximum width of 600px (adjust as needed) */
+/* Additional styling for smaller screens */
 @media only screen and (max-width: 600px) {
     textarea,
     input,
     .yORn,
-    .next{
-        width: 100%; /* Set width to 100% for better responsiveness on smaller screens */
+    .next {
+        width: 100%;
     }
+}
+
+/* Styling for the header */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.headerDiv {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: white;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the main content area */
+.basics {
+    margin-top: 150px;
+    padding: 20px;
+}
+
+/* Styling for specific sections */
+.red {
+    background-color: rgba(255, 0, 0, 0.41);
+}
+
+.blue {
+    background-color: rgba(0, 0, 255, 0.4);
 }
