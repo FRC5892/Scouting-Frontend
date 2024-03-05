@@ -154,7 +154,7 @@
     //control for the next section button for the auto events (also does points)
     anext.addEventListener("click", function () {
         //moves to the next section if there are inputs for each field, otherwise it gives an alert to fill out every field
-        if (AMPauto.value !== "" && SPEAKERauto.value !== ""&&leftclicked) {
+        if (isNegative(Number(AMPauto.innerHTML))&&leftclicked&&isNegative(Number(SPEAKERauto.innerHTML))) {
             autoarray = [AMPauto.innerHTML, SPEAKERauto.innerHTML, leftarea];
             tempPts = 0;
             tempPts = (Number(AMPauto.innerHTML) * 2) + (Number(SPEAKERauto.innerHTML) * 5) + leftarea * 2;
@@ -168,7 +168,7 @@
             sectionTitle="Teleop Score";
             bgColor = "lightblue"
         }
-        else{
+        else if(!leftclicked){
             alert("please input values for all of the fields");
         }
     });
@@ -254,7 +254,7 @@
     //control for the teleop next section button (also does points)
     document.getElementById("teleopnext").addEventListener("click", function () {
         //moves to the next section if there are inputs for each field, otherwise it gives an alert to fill out every field
-        if (teleAMP.value !== "" && teleAMPED.value !== "" && teleSPEAKER.value !== "") {
+        if (isNegative(Number(teleAMP.innerHTML))&&isNegative(Number(teleAMPED.innerHTML))&&isNegative(Number(teleSPEAKER.innerHTML))) {
             telearray = [teleAMPED.innerHTML, teleSPEAKER.innerHTML, teleAMP.innerHTML];
             tempPts = 0;
             tempPts = (Number(teleAMPED.innerHTML) * 5) + (Number(teleSPEAKER.innerHTML) * 2) + (Number(teleAMP.innerHTML));
@@ -275,7 +275,11 @@
         auto.hidden=false;
         teleop.hidden=true;
         sectionTitle="Auton Score";
-        bgColor = "lightgreen"
+        bgColor = "lightgreen";
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // You can use 'auto' or 'smooth' for scrolling behavior
+        });
     });
 
     //control for the endgame next section button (also does points)
@@ -472,6 +476,15 @@
         }
         else if(type="speakerPoints"){
             return(speakerPoints.toString());
+        }
+    }
+    function isNegative(input){
+        if(input<0){
+            window.alert("You put a negative number in, bozo. How do you do that?")
+            return(false)
+        }
+        else{
+            return(true)
         }
     }
     // Register the service worker-for caching stuff, ill add this functionality later but i dont need to/feel like it rn.
