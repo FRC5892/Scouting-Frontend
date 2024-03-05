@@ -6,9 +6,11 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+<div id="headerDiv" class="headerDiv">
 <h1 class="TOP">FRC Scouting Form</h1><br>
-<div id="overall info">
-    <h2>Team and Match Info</h2>
+    <h2 id="sectionHead">Team and Match Info</h2>
+</div>
+<div id="overall info" class="basics">
     <p>Team Number:</p>
     <input type="number" id="teamnum" placeholder="Team Number" class="input"><label for="teamnum"></label><br>
     <p>Match Number:</p>
@@ -24,10 +26,10 @@
         <option value="Blue 3" class="blue">Blue 3</option>
     </select>
 </div>
-<div id="Auto">
+<div id="Auto" class="section">
     <h2>Autonomous Scoring</h2><br>
     <p>Did the robot leave the starting zone during the autonomous time?</p><br>
-    <button id="yautoleft" class="yORn">yes</button><button id="nautoleft" class="yORn">no</button><br>
+    <button id="yautoleft" class="yORn">Yes</button><button id="nautoleft" class="yORn">No</button><br>
     <p>How many times did they score in the AMP during auto?</p><br>
     <div id="AMPauto" class="scoreCount">
         <p id="autoAMPscore" class="scoreDisplay">0</p>
@@ -36,16 +38,16 @@
     <p>How many times did they score in the SPEAKER during auto?</p><br>
     <div id="SPEAKERauto" class="scoreCount">
         <p id="autoSPEAKERscore" class="scoreDisplay">0</p>
-       <button id="autoSPEAKERdown" class="down">-</button><button id="autoSPEAKERup" class="up">+</button>
+        <button id="autoSPEAKERdown" class="down">-</button><button id="autoSPEAKERup" class="up">+</button>
     </div>
-    <button id="autonext" type="submit" class="next">Next Section</button>
+    <button id="autonext" type="submit"  style="align-self: center; align-content: center; width: 100%; height: 50px; font-size: 1rem;">Next Section</button>
 </div>
-<div id="teleop" hidden="hidden">
+<div id="teleop" hidden="hidden" class="section">
     <h2>Teleop Scoring</h2>
     <p>How many times did they score in the AMP?</p><br>
     <div id="teleAMP" class="scoreCount">
         <p id="teleopAMPscore" class="scoreDisplay">0</p>
-      <button id="teleAMPdown" class="down">-</button><button id="teleAMPup" class="up">+</button>
+        <button id="teleAMPdown" class="down">-</button><button id="teleAMPup" class="up">+</button>
     </div>
     <p>How many times did they score in the SPEAKER normally?</p><br>
     <div id="teleSPEAKERnorm" class="scoreCount">
@@ -55,31 +57,35 @@
     <p>How many times did they score in the SPEAKER while it was amplified?</p><br>
     <div id="teleAMPED" class="scoreCount">
         <p id="teleAMPEDscore" class="scoreDisplay">0</p>
-       <button id="teleAMPEDdown" class="down">-</button><button id="teleAMPEDup" class="up">+</button>
+        <button id="teleAMPEDdown" class="down">-</button><button id="teleAMPEDup" class="up">+</button>
     </div>
-    <button id="teleopnext" class="next">Next Section</button>
+    <div class="next">
+    <button id="teleopback">Previous Section</button><button id="teleopnext">Next Section</button>
+    </div>
 </div>
-<div id="endgame" hidden="hidden">
+<div id="endgame" hidden="hidden" class="section">
     <h2>Endgame</h2><br>
     <p>Did they end up PARKED?</p><br>
-    <button id="yparked" class="yORn">yes</button><button id="nparked" class="yORn">no</button><br>
+    <button id="yparked" class="yORn">Yes</button><button id="nparked" class="yORn">No</button><br>
     <p>Did they end up ONSTAGE?</p><br>
-    <button id="yonstage" class="yORn">yes</button><button id="nonstage" class="yORn">no</button><br>
+    <button id="yonstage" class="yORn">Yes</button><button id="nonstage" class="yORn">No</button><br>
     <p>Were they spotlit?</p><br>
-    <button id="yspot" class="yORn">yes</button><button id="nspot" class="yORn">no</button><br>
+    <button id="yspot" class="yORn">Yes</button><button id="nspot" class="yORn">No</button><br>
     <p>Did they score in the TRAP?</p><br>
-    <button id="ytrap" class="yORn">yes</button><button id="ntrap" class="yORn">no</button><br>
+    <button id="ytrap" class="yORn">Yes</button><button id="ntrap" class="yORn">No</button><br>
     <p>Did they get Harmony?</p><br>
-    <button id="yharmony" class="yORn">yes</button><button id="nharmony" class="yORn">no</button><br>
-    <button id="endgamenext" class="next">Next Section</button>
+    <button id="yharmony" class="yORn">Yes</button><button id="nharmony" class="yORn">No</button><br>
+    <div class="next">
+        <button id="endgameback">Previous Section</button><button id="endgamenext">Next Section</button>
+    </div>
 </div>
-<div id="confirm" hidden="hidden">
+<div id="confirm" hidden="hidden" class="section">
     <h2>Does this score look right?</h2><br>
     <p id="finalscore">points</p><br>
-    <button id="finalyes" class="yORn">yes</button><button id="finalno" class="yORn">no</button><br>
+    <button id="finalyes" class="yORn">Yes</button><button id="finalno" class="yORn">No</button><br>
 </div>
 <div id="last" hidden="hidden">
-    <button id="submitbtn" class="yORn">reset</button>
+    <button id="submitbtn" class="yORn">Reset</button>
 </div>
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
@@ -109,7 +115,11 @@
     let ampPoints = 0;
     let autonScore = 0;
     let endgamePoints = 0;
+    let bgColor = "lightgreen"
     let scoutName=document.getElementById("scoutname");
+    let sectionTitle ="Auton Score";
+    let headerText= document.getElementById("sectionHead");
+    let headDiv = document.getElementById('headerDiv');
     //[Team num, match id, scout name, left area y/n,auto amp scores, auto speaker scores, auton score, teleop amp scores,
     // teleop amped speaker scores,teleop speaker scores, endgame parked y/n,
     // endgame onstage y/n, endgame trap score y/n,spotlit y/n, harmony y/n, all speaker points, all amp points, endgame points, total points]
@@ -127,6 +137,7 @@
     let teleAMP = document.getElementById("teleopAMPscore");
     let teleSPEAKER = document.getElementById("teleopSPEAKERscore");
     let teleAMPED = document.getElementById("teleAMPEDscore");
+    let teleBack = document.getElementById('teleopback');
     //this isnt actually important lol-it was mostly used for some testing/debugging
     let telearray = [];
 
@@ -145,16 +156,17 @@
         //moves to the next section if there are inputs for each field, otherwise it gives an alert to fill out every field
         if (AMPauto.value !== "" && SPEAKERauto.value !== ""&&leftclicked) {
             autoarray = [AMPauto.innerHTML, SPEAKERauto.innerHTML, leftarea];
-          //  console.log(autoarray);
             tempPts = 0;
             tempPts = (Number(AMPauto.innerHTML) * 2) + (Number(SPEAKERauto.innerHTML) * 5) + leftarea * 2;
-            points += tempPts;
-           // console.log(points);
             teleop.hidden = false;
             auto.hidden = true;
-            speakerPoints = Number(SPEAKERauto.innerHTML)*5;
-            ampPoints=Number(AMPauto.innerHTML)*2;
             autonScore = tempPts;
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // You can use 'auto' or 'smooth' for scrolling behavior
+            });
+            sectionTitle="Teleop Score";
+            bgColor = "lightblue"
         }
         else{
             alert("please input values for all of the fields");
@@ -244,19 +256,26 @@
         //moves to the next section if there are inputs for each field, otherwise it gives an alert to fill out every field
         if (teleAMP.value !== "" && teleAMPED.value !== "" && teleSPEAKER.value !== "") {
             telearray = [teleAMPED.innerHTML, teleSPEAKER.innerHTML, teleAMP.innerHTML];
-           // console.log(telearray);
             tempPts = 0;
             tempPts = (Number(teleAMPED.innerHTML) * 5) + (Number(teleSPEAKER.innerHTML) * 2) + (Number(teleAMP.innerHTML));
-            points += tempPts;
-           // console.log(points);
             endgame.hidden = false;
             teleop.hidden = true;
-            speakerPoints +=(Number(teleAMPED.innerHTML)*5)+(Number(teleSPEAKER.innerHTML)*2);
-            ampPoints += Number(teleAMP.innerHTML);
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // You can use 'auto' or 'smooth' for scrolling behavior
+            });
+            sectionTitle ="Endgame Score";
+            bgColor="lightpink";
         }
         else{
             alert("please input vales for all the fields");
         }
+    });
+    teleBack.addEventListener("click",function (){
+        auto.hidden=false;
+        teleop.hidden=true;
+        sectionTitle="Auton Score";
+        bgColor = "lightgreen"
     });
 
     //control for the endgame next section button (also does points)
@@ -266,19 +285,32 @@
             tempPts = 0;
             tempPts = (trap * 5) + (onstage * 3) + parked+(harmony*2);
             if(onstage==1 && spotlit==1){
-          //      console.log("added spotlit");
-            tempPts+=spotlit;
+                tempPts+=spotlit;
             }
-            points = points + tempPts;
-            document.getElementById("finalscore").innerText = points;
-          //  console.log(points);
+            document.getElementById("finalscore").innerText = pointsCount("totalPoints");
             confirm.hidden = false;
             endgame.hidden = true;
             endgamePoints=tempPts;
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // You can use 'auto' or 'smooth' for scrolling behavior
+            });
+            sectionTitle="Confirmation";
+            bgColor ="lightcoral";
         }
         else{
             alert("please input values for every field");
         }
+    });
+    document.getElementById('endgameback').addEventListener("click",function(){
+        teleop.hidden = false;
+        endgame.hidden = true;
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // You can use 'auto' or 'smooth' for scrolling behavior
+        });
+        sectionTitle="Teleop Score";
+        bgColor = "lightblue"
     });
 
     //functions for the final confirmation- to make sure the scores they input add up to the same as the official gamescore
@@ -287,14 +319,19 @@
         points = 0;
         auto.hidden = false;
         confirm.hidden = true;
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // You can use 'auto' or 'smooth' for scrolling behavior
+        });
+        bgColor = "lightgreen"
+        sectionTitle ="Auton Score";
     });
     document.getElementById("finalyes").addEventListener("click", function () {
         //moves to the next section if there are inputs for match and team number, otherwise it gives an alert to fill out those fields
         if (teamnum.value !== "" && matchid.value !== "" && scoutName.value !=="") {
             //sets values for the final array, these will be logged and will become the data in the QR code
             finalarray = [teamnum.value, matchid.value, scoutName.value, YorN(leftarea), AMPauto.innerHTML, SPEAKERauto.innerHTML, autonScore, teleAMP.innerHTML, teleSPEAKER.innerHTML,
-                teleAMPED.innerHTML, YorN(parked), YorN(onstage), YorN(trap),YorN(spotlit),YorN(harmony), speakerPoints,ampPoints,endgamePoints, points];
-          //  console.log(finalarray);
+                teleAMPED.innerHTML, YorN(parked), YorN(onstage), YorN(trap),YorN(spotlit),YorN(harmony), pointsCount("speakerPoints"),pointsCount("ampPoints"),endgamePoints, pointsCount("totalPoints")];
             const jsonString = finalarray.toString();
             console.log(jsonString);
             //creates and actually inserts the QR code
@@ -313,6 +350,7 @@
             });
             document.getElementById("last").hidden = false;
             confirm.hidden = true;
+            headerText.hidden= true;
         }
         else{
             alert("please input team number and/or match number");
@@ -331,7 +369,6 @@
         for (let i = 0; i < document.getElementsByClassName("scoreDisplay").length; i++) {
             document.getElementsByClassName("scoreDisplay")[i].innerHTML="0";
         }
-        points = 0;
         parked = 0;
         onstage = 0;
         trap = 0;
@@ -346,8 +383,13 @@
         spotclicked=false;
         auto.hidden=false;
         last.hidden=true;
-        //qrdiv.hidden=true;
+        headerText.hidden= false;
+        sectionTitle="Auton Score";
+        bgColor = "lightgreen"
         document.getElementById("qrcode1").remove();
+        finalarray = [teamnum.value, matchid.value, scoutName.value, YorN(leftarea), AMPauto.innerHTML, SPEAKERauto.innerHTML, autonScore, teleAMP.innerHTML, teleSPEAKER.innerHTML,
+            teleAMPED.innerHTML, YorN(parked), YorN(onstage), YorN(trap),YorN(spotlit),YorN(harmony), pointsCount("speakerPoints"),pointsCount("ampPoints"),endgamePoints, pointsCount("totalPoints")];
+        console.log(finalarray);
     });
     ///returns yes or no based on some values, this is used to make the final array say yes or no rather than 1 or 0
     function YorN(num) {
@@ -395,6 +437,43 @@
     document.getElementById("teleAMPEDdown").addEventListener("click",function(){
         addNum("down",teleAMPED);
     });
+    document.addEventListener('DOMContentLoaded', function () {
+        window.addEventListener('scroll', function () {
+            headerText = document.getElementById('sectionHead');
+            let scrollPosition = window.scrollY;
+
+            if (scrollPosition < 350) {
+                headerText.innerText = 'Team and Match Info';
+                headDiv.style.backgroundColor ="white";
+            } else {
+                headerText.innerText = sectionTitle;
+                headDiv.style.backgroundColor=bgColor;
+            }
+        });
+    });
+    //does the points calculations- could be better but eh, it works
+    function pointsCount(type){
+        points=0;
+        ampPoints= 0;
+        speakerPoints= 0;
+        points= (Number(AMPauto.innerHTML) * 2) + (Number(SPEAKERauto.innerHTML) * 5) + (leftarea * 2)+
+            (Number(teleAMPED.innerHTML) * 5) + (Number(teleSPEAKER.innerHTML) * 2) + (Number(teleAMP.innerHTML))+
+            (trap * 5) + (onstage * 3) + parked+(harmony*2);
+        if(onstage==1 && spotlit==1){
+            points+=1;
+        }
+        ampPoints= (Number(AMPauto.innerHTML)*2)+Number(teleAMP.innerHTML);
+        speakerPoints= (Number(SPEAKERauto.innerHTML)*5)+(Number(teleAMPED.innerHTML)*5)+(Number(teleSPEAKER.innerHTML)*2);
+        if(type=="totalPoints"){
+            return(points.toString());
+        }
+        else if(type=="ampPoints"){
+            return(ampPoints.toString());
+        }
+        else if(type="speakerPoints"){
+            return(speakerPoints.toString());
+        }
+    }
     // Register the service worker-for caching stuff, ill add this functionality later but i dont need to/feel like it rn.
     /*if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
