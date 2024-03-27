@@ -408,6 +408,10 @@
             toAdd.innerText= (Number(toAdd.innerText)+1).toString();
         }
         else{
+            if(Number(toAdd.innerText)-1<0){
+                return(false)
+            }
+            else{
             toAdd.innerText= (Number(toAdd.innerText)-1).toString();
         }
     }
