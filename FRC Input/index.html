@@ -408,9 +408,9 @@
             toAdd.innerText= (Number(toAdd.innerText)+1).toString();
         }
         else{
-            if(Number(toAdd.innerText)-1<=-1){
-                window.alert("why")
-                return(false)
+            if(Number(toAdd.innerText)==-1){
+                window.alert("why");
+                return(false);
             }
             else{
             toAdd.innerText= (Number(toAdd.innerText)-1).toString();
