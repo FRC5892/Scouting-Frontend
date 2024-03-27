@@ -407,12 +407,10 @@
         if(type=="up"){
             toAdd.innerText= (Number(toAdd.innerText)+1).toString();
         }
+        else if(Number(toAdd.innerText)==0){
+                toAdd.innerText="0";
+            } 
         else{
-            if(Number(toAdd.innerText)==-1){
-                window.alert("why");
-                return(false);
-            }
-            else{
             toAdd.innerText= (Number(toAdd.innerText)-1).toString();
         }
     }
